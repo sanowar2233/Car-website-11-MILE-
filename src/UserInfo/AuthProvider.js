@@ -16,6 +16,7 @@ const AuthProvider = ({children}) => {
 
 
     const createUser=(email,password)=>{
+        setLoading(true)
         return createUserWithEmailAndPassword(auth, email,password)
     }
 
@@ -28,6 +29,7 @@ const AuthProvider = ({children}) => {
        const unsbuscribe= onAuthStateChanged(auth, currentUser=>{
             console.log(currentUser)
             setUser(currentUser)
+            setLoading(false)
 
         })
         return()=>{
