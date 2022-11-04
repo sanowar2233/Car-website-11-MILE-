@@ -1,3 +1,4 @@
+import { data } from 'autoprefixer';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../UserInfo/AuthProvider';
 import OrderRow from './OrderRow';
@@ -10,7 +11,7 @@ const Order = () => {
     //   const url=`http://localhost:5000/order?email=${user.email}`
 
       useEffect(()=>{
-        fetch(`http://localhost:5000/order?email=${user.email}`)
+        fetch(`http://localhost:5000/order?email=${user?.email}`)
         .then(res=>res.json())
         .then(data=>setOrder(data))
 
@@ -38,6 +39,22 @@ const Order = () => {
   
       }
 
+      const handleStatusUpdate= id =>{
+         fetch(`http://localhost:5000/orders/${id}`,{
+          method:'PATCH',
+          headers:{
+            'content-type' : 'application/json'
+
+          },
+          body:JSON.stringify({status:'approved'})
+         })
+         .then(res=>res.json())
+         .then(data=>{
+          console.log(data)
+          
+         })
+      }
+
 
 
     return (
@@ -58,7 +75,7 @@ const Order = () => {
     <tbody>
    
      {
-        order.map(order=><OrderRow key={order._id} order={order} handleDelete={handleDelete} ></OrderRow>)
+        order.map(order=><OrderRow key={order._id} order={order} handleDelete={handleDelete} handleStatusUpdate={handleStatusUpdate} ></OrderRow>)
      }
 
     </tbody>
